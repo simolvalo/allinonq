@@ -12,14 +12,14 @@ BOOST_CATEGORY_ID = 1534328814707151151
 CARRY_CATEGORY_ID = 1534328768611618846
 
 # Role ID allowed to write 'done' (Put your Admin/Staff Role ID here)
-STAFF_ROLE_ID = 123456789012345678  # <--- BDDAL HAD L-ID B ID DYAL ROLE D STAFF
+STAFF_ROLE_ID = 1534345538080870480  # <--- BDDAL HAD L-ID B ID DYAL ROLE D STAFF
 
 # Payment Infos
 MY_RIB_INFO = "Bank: CIH BANK\nRIB: 123456789012345678901234\nName: YOUR NAME HERE"
 MY_PAYPAL_INFO = "PayPal Email: paypal.me/yourusername"
 
 # Image URLs (Or replace with local images)
-IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/123/456/image1.png"
+IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534346676989464587/image.png?ex=6a73cb32&is=6a7279b2&hm=1f7a222725b40cd566366a7ef235e96ead611cf40dcd5e2ed6ea8322400ef230&"
 IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/123/456/image2.png"
 
 # Prices Matrix for Ranks
