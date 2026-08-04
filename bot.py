@@ -15,7 +15,9 @@ CARRY_CATEGORY_ID = 1534328768611618846
 MY_RIB_INFO = "Bank: CIH BANK\nRIB: 123456789012345678901234\nName: YOUR NAME HERE"
 MY_PAYPAL_INFO = "PayPal Email: paypal.me/yourusername"
 
-IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/123/456/image1.png"
+# Image URLs for Prices
+IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/123/456/image1.png"  # Link image 1 (Diamond/Mythic/Legendary)
+IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/123/456/image2.png"  # Link image 2 (Masters/Pro)
 
 # Prices Matrix for Ranks
 RANK_PRICES = {
@@ -133,18 +135,19 @@ class TicketControlsView(View):
         )
         await interaction.response.send_message(embed=embed)
 
-# Step-by-Step Selection Flow (Dropdowns)
+# Step-by-Step Selection Flow (Dropdowns - No Typing Required)
 class OrderFlowView(View):
     def __init__(self, order_type: str):
         super().__init__(timeout=180)
         self.order_type = order_type
         self.current_rank = None
         self.desired_rank = None
+        self.power_11_count = None
         self.payment_method = None
 
-        # Current Rank Dropdown
+        # 1. Current Rank Dropdown
         self.current_select = Select(
-            placeholder="Select your Current Rank...",
+            placeholder="Select your current rank...",
             options=[discord.SelectOption(label=rank) for rank in RANKS_ORDER[:-1]]
         )
         self.current_select.callback = self.current_callback
@@ -157,8 +160,9 @@ class OrderFlowView(View):
         valid_desired = RANKS_ORDER[start_idx + 1:]
 
         self.clear_items()
+        # 2. Desired Rank Dropdown
         self.desired_select = Select(
-            placeholder=f"Current: {self.current_rank} ➔ Select Desired Rank...",
+            placeholder=f"Current: {self.current_rank} ➔ Select desired rank...",
             options=[discord.SelectOption(label=rank) for rank in valid_desired[:25]]
         )
         self.desired_select.callback = self.desired_callback
@@ -173,8 +177,31 @@ class OrderFlowView(View):
         self.desired_rank = self.desired_select.values[0]
 
         self.clear_items()
+        # 3. Power 11 Brawlers Count Dropdown
+        self.power_select = Select(
+            placeholder="How many Power 11 brawlers do you have?",
+            options=[
+                discord.SelectOption(label="0 - 5 Brawlers", value="0-5"),
+                discord.SelectOption(label="6 - 12 Brawlers", value="6-12"),
+                discord.SelectOption(label="13 - 20 Brawlers", value="13-20"),
+                discord.SelectOption(label="20+ Brawlers", value="20+")
+            ]
+        )
+        self.power_select.callback = self.power_callback
+        self.add_item(self.power_select)
+
+        await interaction.response.edit_message(
+            content=f"✅ Current: **{self.current_rank}** | Desired: **{self.desired_rank}**\nSelect your **Power 11 Brawlers Count**:",
+            view=self
+        )
+
+    async def power_callback(self, interaction: discord.Interaction):
+        self.power_11_count = self.power_select.values[0]
+
+        self.clear_items()
+        # 4. Payment Method Dropdown
         self.payment_select = Select(
-            placeholder="Select Payment Method...",
+            placeholder="Select payment method...",
             options=[
                 discord.SelectOption(label="Bank Transfer / RIB", emoji="🏦"),
                 discord.SelectOption(label="PayPal", emoji="🅿️"),
@@ -185,7 +212,7 @@ class OrderFlowView(View):
         self.add_item(self.payment_select)
 
         await interaction.response.edit_message(
-            content=f"✅ Current: **{self.current_rank}** | Desired: **{self.desired_rank}**\nSelect your **Payment Method**:",
+            content=f"✅ Current: **{self.current_rank}** | Desired: **{self.desired_rank}** | Power 11: **{self.power_11_count}**\nSelect **Payment Method**:",
             view=self
         )
 
@@ -225,6 +252,7 @@ class OrderFlowView(View):
         )
         details_embed.add_field(name="Current Rank 🛡️", value=f"└ `{self.current_rank}`", inline=False)
         details_embed.add_field(name="Desired Rank 🏆", value=f"└ `{self.desired_rank}`", inline=False)
+        details_embed.add_field(name="Power 11 Brawlers ⚡", value=f"└ `{self.power_11_count}`", inline=False)
         details_embed.add_field(name="Order Type 🚀", value=f"└ `{self.order_type}`", inline=False)
         details_embed.add_field(name="Total Price 💰", value=f"└ `${total_price} USD`", inline=False)
         details_embed.add_field(name="Payment Method 💳", value=f"└ `{self.payment_method}`", inline=False)
@@ -272,14 +300,21 @@ class MainTicketView(View):
 @bot.tree.command(name="setup_panel", description="Setup Ranked Boost Panel")
 @app_commands.default_permissions(administrator=True)
 async def setup_panel(interaction: discord.Interaction):
-    embed = Embed(
+    # Embed 1 - Offers & First Price Image
+    embed1 = Embed(
         title="Ranked B00st Service",
         description="**What We Offer**\n• Climb the ranks with professional boosting service\n• Fast, secure, and reliable rank progression\n• Experienced boosters with proven track records",
         color=0x8A2BE2
     )
-    embed.set_image(url=IMAGE_PRICES_1)
+    embed1.set_image(url=IMAGE_PRICES_1)
 
-    await interaction.channel.send(embed=embed, view=MainTicketView())
+    # Embed 2 - Second Price Image (Masters / Pro)
+    embed2 = Embed(
+        color=0x8A2BE2
+    )
+    embed2.set_image(url=IMAGE_PRICES_2)
+
+    await interaction.channel.send(embeds=[embed1, embed2], view=MainTicketView())
     await interaction.response.send_message("Panel created successfully!", ephemeral=True)
 
 @bot.event
