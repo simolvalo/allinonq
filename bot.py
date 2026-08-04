@@ -20,7 +20,7 @@ MY_PAYPAL_INFO = "PayPal Email: Omarjr"
 
 # Image URLs (Or replace with local images)
 IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534346676989464587/image.png?ex=6a73cb32&is=6a7279b2&hm=1f7a222725b40cd566366a7ef235e96ead611cf40dcd5e2ed6ea8322400ef230&"
-IMAGE_PRICES_2 = "https://i.imgur.com/YAZ8YOT.png"
+IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534347605138739250/image.png?ex=6a73cc0f&is=6a727a8f&hm=4c70a5f659bc39bf4ecb3249d06dd3114f2cbd7d31180c22241f5579ed0787f0&"
 
 # Prices Matrix for Ranks
 RANK_PRICES = {
