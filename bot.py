@@ -2,7 +2,7 @@ import os
 import discord
 from discord.ext import commands
 from discord import app_commands, Embed, ButtonStyle, TextStyle
-from discord.ui import View, Button, Modal, TextInput, Select
+from discord.ui import View, Button, Modal, TextInput
 
 # ================= Configuration =================
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -18,7 +18,7 @@ STAFF_ROLE_ID = 1534345538080870480
 MY_RIB_INFO = "Bank: CIH BANK\nRIB: 0644507960825345253\nName: Omar"
 MY_PAYPAL_INFO = "PayPal Email: Omarjr"
 
-# Image URLs (Put direct image links here or host them permanently)
+# Image URLs
 IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534346676989464587/image.png"
 IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534347605138739250/image.png"
 
@@ -37,14 +37,23 @@ RANKS_ORDER = list(RANK_PRICES.keys())
 
 def calculate_price(current_rank: str, desired_rank: str, order_type: str) -> float:
     try:
-        start_idx = RANKS_ORDER.index(current_rank)
-        end_idx = RANKS_ORDER.index(desired_rank)
+        # Match case-insensitive or partial
+        c_rank = next((r for r in RANKS_ORDER if r.lower() == current_rank.strip().lower()), None)
+        d_rank = next((r for r in RANKS_ORDER if r.lower() == desired_rank.strip().lower()), None)
+
+        if not c_rank or not d_rank:
+            return 0.0
+
+        start_idx = RANKS_ORDER.index(c_rank)
+        end_idx = RANKS_ORDER.index(d_rank)
+
         if start_idx >= end_idx:
             return 0.0
+
         base_total = sum(RANK_PRICES[RANKS_ORDER[i]] for i in range(start_idx + 1, end_idx + 1))
         multiplier = 2.0 if order_type == "Carry" else 1.0
         return round(base_total * multiplier, 2)
-    except ValueError:
+    except Exception:
         return 0.0
 
 # ================= Discord Bot Setup =================
@@ -124,7 +133,7 @@ class TicketControlsView(View):
 
     async def sent_payment_callback(self, interaction: discord.Interaction):
         pm_lower = self.payment_method.lower()
-        if "bank" in pm_lower or "rib" in pm_lower:
+        if "bank" in pm_lower or "rib" in pm_lower or "cih" in pm_lower:
             pay_details = f"🏦 **Bank Transfer Details (RIB):**\n```\n{MY_RIB_INFO}\n```"
         else:
             pay_details = f"🅿️ **PayPal Details:**\n```\n{MY_PAYPAL_INFO}\n```"
@@ -136,103 +145,60 @@ class TicketControlsView(View):
         )
         await interaction.response.send_message(embed=embed)
 
-# Step-by-Step Dropdown Flow (Prevents mistyping)
-class OrderDropdownFlowView(View):
+# Order Modal Popup (All inputs in 1 form)
+class OrderFormModal(Modal):
     def __init__(self, order_type: str):
-        super().__init__(timeout=180)
+        super().__init__(title=f"Ranked {order_type} Order Form")
         self.order_type = order_type
-        self.current_rank = None
-        self.desired_rank = None
-        self.power_11_count = None
 
-        # Step 1: Select Current Rank
-        self.current_select = Select(
-            placeholder="Select your current rank...",
-            options=[discord.SelectOption(label=rank, value=rank) for rank in RANKS_ORDER[:-1]]
+        self.current_rank = TextInput(
+            label="Current Rank",
+            placeholder="e.g. Diamond I, Mythic II...",
+            required=True
         )
-        self.current_select.callback = self.current_callback
-        self.add_item(self.current_select)
-
-    async def current_callback(self, interaction: discord.Interaction):
-        self.current_rank = self.current_select.values[0]
-        start_idx = RANKS_ORDER.index(self.current_rank)
-        valid_desired = RANKS_ORDER[start_idx + 1:]
-
-        self.clear_items()
-        # Step 2: Select Desired Rank
-        self.desired_select = Select(
-            placeholder=f"Current: {self.current_rank} -> Select desired rank...",
-            options=[discord.SelectOption(label=rank, value=rank) for rank in valid_desired[:25]]
+        self.desired_rank = TextInput(
+            label="Desired Rank",
+            placeholder="e.g. Legendary I, Masters I...",
+            required=True
         )
-        self.desired_select.callback = self.desired_callback
-        self.add_item(self.desired_select)
-
-        await interaction.response.edit_message(
-            content=f"✅ Current Rank: **{self.current_rank}**\nNow select your **Desired Rank**:",
-            view=self
+        self.power_11 = TextInput(
+            label="Power 11 Brawlers Count",
+            placeholder="e.g. 5, 12, 20...",
+            required=True
+        )
+        self.payment_method = TextInput(
+            label="Payment Method (RIB / PayPal)",
+            placeholder="Write RIB or PayPal",
+            required=True
         )
 
-    async def desired_callback(self, interaction: discord.Interaction):
-        self.desired_rank = self.desired_select.values[0]
+        self.add_item(self.current_rank)
+        self.add_item(self.desired_rank)
+        self.add_item(self.power_11)
+        self.add_item(self.payment_method)
 
-        self.clear_items()
-        # Step 3: Select Power 11 Brawlers Count
-        self.power_select = Select(
-            placeholder="How many Power 11 brawlers do you have?",
-            options=[
-                discord.SelectOption(label="1 - 5 Brawlers", value="1-5"),
-                discord.SelectOption(label="6 - 10 Brawlers", value="6-10"),
-                discord.SelectOption(label="11 - 15 Brawlers", value="11-15"),
-                discord.SelectOption(label="16 - 20 Brawlers", value="16-20"),
-                discord.SelectOption(label="20+ Brawlers", value="20+")
-            ]
-        )
-        self.power_select.callback = self.power_callback
-        self.add_item(self.power_select)
-
-        await interaction.response.edit_message(
-            content=f"✅ Current: **{self.current_rank}** | Desired: **{self.desired_rank}**\nSelect **Power 11 Count**:",
-            view=self
-        )
-
-    async def power_callback(self, interaction: discord.Interaction):
-        self.power_11_count = self.power_select.values[0]
-
-        self.clear_items()
-        # Step 4: Select Payment Method
-        self.payment_select = Select(
-            placeholder="Select Payment Method...",
-            options=[
-                discord.SelectOption(label="Bank Transfer / RIB", emoji="🏦"),
-                discord.SelectOption(label="PayPal", emoji="🅿️")
-            ]
-        )
-        self.payment_select.callback = self.payment_callback
-        self.add_item(self.payment_select)
-
-        await interaction.response.edit_message(
-            content=f"✅ Current: **{self.current_rank}** | Desired: **{self.desired_rank}** | Power 11: **{self.power_11_count}**\nSelect **Payment Method**:",
-            view=self
-        )
-
-    async def payment_callback(self, interaction: discord.Interaction):
-        pay_m = self.payment_select.values[0]
+    async def on_submit(self, interaction: discord.Interaction):
         category_id = CARRY_CATEGORY_ID if self.order_type == "Carry" else BOOST_CATEGORY_ID
         category = interaction.guild.get_channel(category_id)
 
-        # Check for single ticket limit per user
+        # Check existing ticket limit
         if category:
             for channel in category.text_channels:
                 if channel.name == f"order-{interaction.user.name}".lower():
-                    await interaction.response.edit_message(
+                    await interaction.response.send_message(
                         content=f"❌ You already have an open ticket: {channel.mention}. Close it first!",
-                        view=None
+                        ephemeral=True
                     )
                     return
 
         await interaction.response.defer(ephemeral=True)
 
-        total_price = calculate_price(self.current_rank, self.desired_rank, self.order_type)
+        c_rank = self.current_rank.value.strip()
+        d_rank = self.desired_rank.value.strip()
+        p_11 = self.power_11.value.strip()
+        pay_m = self.payment_method.value.strip()
+
+        total_price = calculate_price(c_rank, d_rank, self.order_type)
         price_str = f"${total_price} USD" if total_price > 0 else "Custom Pricing"
 
         ticket_name = f"order-{interaction.user.name}".lower()
@@ -260,9 +226,9 @@ class OrderDropdownFlowView(View):
             title="Your Ranked Boost Order Details",
             color=0x8A2BE2
         )
-        details_embed.add_field(name="Current Rank 🛡️", value=f"└ `{self.current_rank}`", inline=False)
-        details_embed.add_field(name="Desired Rank 🏆", value=f"└ `{self.desired_rank}`", inline=False)
-        details_embed.add_field(name="Power 11 Brawlers ⚡", value=f"└ `{self.power_11_count}`", inline=False)
+        details_embed.add_field(name="Current Rank 🛡️", value=f"└ `{c_rank}`", inline=False)
+        details_embed.add_field(name="Desired Rank 🏆", value=f"└ `{d_rank}`", inline=False)
+        details_embed.add_field(name="Power 11 Brawlers ⚡", value=f"└ `{p_11}`", inline=False)
         details_embed.add_field(name="Order Type 🚀", value=f"└ `{self.order_type}`", inline=False)
         details_embed.add_field(name="Total Price 💰", value=f"└ `{price_str}`", inline=False)
         details_embed.add_field(name="Payment Method 💳", value=f"└ `{pay_m}`", inline=False)
@@ -286,11 +252,11 @@ class ServiceTypeView(View):
 
     @discord.ui.button(label="Get B00sted", style=ButtonStyle.success, emoji="🚀", custom_id="srv_boosted_btn")
     async def boosted_button(self, interaction: discord.Interaction, button: Button):
-        await interaction.response.send_message("Please select your order parameters using the menus below:", view=OrderDropdownFlowView("Boost"), ephemeral=True)
+        await interaction.response.send_modal(OrderFormModal("Boost"))
 
     @discord.ui.button(label="Get Carried (2x Price)", style=ButtonStyle.blurple, emoji="🤝", custom_id="srv_carried_btn")
     async def carried_button(self, interaction: discord.Interaction, button: Button):
-        await interaction.response.send_message("Please select your order parameters using the menus below:", view=OrderDropdownFlowView("Carry"), ephemeral=True)
+        await interaction.response.send_modal(OrderFormModal("Carry"))
 
 # Main Ticket Panel View
 class MainTicketView(View):
@@ -310,7 +276,6 @@ class MainTicketView(View):
 @bot.tree.command(name="setup_panel", description="Setup Ranked Boost Panel")
 @app_commands.default_permissions(administrator=True)
 async def setup_panel(interaction: discord.Interaction):
-    # Single clean embed with image to remove the empty bottom line box
     embed1 = Embed(
         title="Ranked B00st Service",
         description="**What We Offer**\n• Climb the ranks with professional boosting service\n• Fast, secure, and reliable rank progression\n• Experienced boosters with proven track records",
@@ -318,7 +283,11 @@ async def setup_panel(interaction: discord.Interaction):
     )
     embed1.set_image(url=IMAGE_PRICES_1)
 
-    await interaction.channel.send(embed=embed1, view=MainTicketView())
+    embed2 = Embed(color=0x8A2BE2)
+    embed2.set_image(url=IMAGE_PRICES_2)
+
+    # Sending both images attached to ONE single message with the button underneath
+    await interaction.channel.send(embeds=[embed1, embed2], view=MainTicketView())
     await interaction.response.send_message("Panel created successfully!", ephemeral=True)
 
 @bot.event
