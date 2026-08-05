@@ -112,7 +112,7 @@ DEFAULT_RANK_EMOJIS = {
     "Diamond I": "💎", "Diamond II": "💎", "Diamond III": "💎",
     "Mythic I": "🔮", "Mythic II": "🔮", "Mythic III": "🔮",
     "Legendary I": "👑", "Legendary II": "👑", "Legendary III": "👑",
-    "Masters I": "🔥", "Masters II": "🔥", "Pro": "⚡"
+    "Masters I": "🔥", "Masters II": "🔥", "Masters III" : "🔥" , "Pro": "⚡"
 }
 
 # ----------------- POWER 11 EMOJIS -----------------
