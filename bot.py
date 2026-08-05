@@ -349,19 +349,18 @@ class OrderSelectionView(View):
     async def current_rank_callback(self, interaction: discord.Interaction):
         await interaction.response.defer()
         self.selected_current_rank = self.current_select.values[0]
-        
+
         # 2. Select Desired Rank
         self.clear_items()
         rank_options_2 = [discord.SelectOption(label=r) for r in RANKS_ORDER]
         desired_select = Select(placeholder=f"Current: {self.selected_current_rank} ➔ Select desired rank...", options=rank_options_2[:25], custom_id="sel_des_rank")
         desired_select.callback = self.desired_rank_callback
         self.add_item(desired_select)
-        
+
         await interaction.edit_original_response(content=f"✅ Current Rank: **{self.selected_current_rank}**\nNow pick your desired rank:", view=self)
 
     async def desired_rank_callback(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        select_component = interaction.data
         self.selected_desired_rank = interaction.data["values"][0]
 
         # 3. Select Power 11 Brawlers
@@ -391,9 +390,9 @@ class OrderSelectionView(View):
         )
 
     async def payment_method_callback(self, interaction: discord.Interaction):
+        # Direct modal response without defer (defer before send_modal is invalid in Discord API)
         self.selected_payment_method = interaction.data["values"][0]
 
-        # 5. Open Modal for Notes
         modal = FinalDetailsModal(
             order_type=self.order_type,
             current_rank=self.selected_current_rank,
