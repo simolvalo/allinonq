@@ -9,7 +9,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 
 BOOST_CATEGORY_ID = 1534328814707151151
 CARRY_CATEGORY_ID = 1534328768611618846
-STAFF_ROLE_ID = 1534370879960776764
+STAFF_ROLE_ID = 1534345538080870480
 
 MY_RIB_INFO = "Bank: CIH BANK\nRIB: 0644507960825345253\nName: Omar"
 MY_PAYPAL_INFO = "PayPal Email: Omarjr"
@@ -95,6 +95,10 @@ def calculate_price(current_rank: str, desired_rank: str, order_type: str) -> fl
     except Exception:
         return 0.0
 
+def is_staff_or_admin(user: discord.Member) -> bool:
+    has_staff_role = any(role.id == STAFF_ROLE_ID for role in user.roles)
+    return has_staff_role or user.guild_permissions.administrator
+
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
@@ -106,6 +110,9 @@ class ConfirmCloseView(View):
 
     @discord.ui.button(label="Yes, Close", style=ButtonStyle.danger, emoji="✅", custom_id="confirm_close_btn")
     async def confirm(self, interaction: discord.Interaction, button: Button):
+        if not is_staff_or_admin(interaction.user):
+            await interaction.response.send_message("❌ Only Staff members can confirm closing this ticket!", ephemeral=True)
+            return
         await interaction.response.send_message("🔒 Closing channel in 5 seconds...")
         await discord.utils.sleep_until(discord.utils.utcnow() + discord.utils.datetime.timedelta(seconds=5))
         await interaction.channel.delete()
@@ -181,6 +188,10 @@ class TicketControlsView(View):
         self.add_item(self.sent_payment_btn)
 
     async def close_callback(self, interaction: discord.Interaction):
+        if not is_staff_or_admin(interaction.user):
+            await interaction.response.send_message("❌ Only Staff members can close this ticket!", ephemeral=True)
+            return
+
         embed = Embed(
             title="Confirm Action",
             description="Are you sure you want to close this ticket?",
@@ -189,13 +200,17 @@ class TicketControlsView(View):
         await interaction.response.send_message(embed=embed, view=ConfirmCloseView(), ephemeral=True)
 
     async def close_reason_callback(self, interaction: discord.Interaction):
+        if not is_staff_or_admin(interaction.user):
+            await interaction.response.send_message("❌ Only Staff members can close this ticket!", ephemeral=True)
+            return
+
         await interaction.response.send_modal(CloseReasonModal())
 
     async def rename_callback(self, interaction: discord.Interaction):
-        has_staff_role = any(role.id == STAFF_ROLE_ID for role in interaction.user.roles)
-        if not has_staff_role and not interaction.user.guild_permissions.administrator:
+        if not is_staff_or_admin(interaction.user):
             await interaction.response.send_message("❌ Only Staff members can rename this ticket!", ephemeral=True)
             return
+
         await interaction.response.send_modal(RenameTicketModal())
 
     async def sent_payment_callback(self, interaction: discord.Interaction):
@@ -420,8 +435,7 @@ async def on_message(message: discord.Message):
 
     if message.channel.id in bot.ticket_data:
         if message.content.strip().lower() == "done":
-            has_staff_role = any(role.id == STAFF_ROLE_ID for role in message.author.roles)
-            if not has_staff_role and not message.author.guild_permissions.administrator:
+            if not is_staff_or_admin(message.author):
                 await message.channel.send("❌ Only Staff members can use the `done` command!")
                 return
 
