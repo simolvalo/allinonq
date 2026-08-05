@@ -101,6 +101,7 @@ CUSTOM_RANK_EMOJIS = {
     "Legendary III": {"name": "legendary3", "id": None, "animated": False},
     "Masters I": {"name": "masters1", "id": None, "animated": False},
     "Masters II": {"name": "masters2", "id": None, "animated": False},
+    "Masters III": {"name": "masters3", "id": None, "animated": False},
     "Pro": {"name": "pro", "id": None, "animated": False}
 }
 
