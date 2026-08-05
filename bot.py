@@ -38,6 +38,9 @@ IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/153
 IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534347605138739250/image.png"
 
 # ================= CUSTOM EMOJIS CONFIGURATION =================
+# حط الـ name والـ id ديال الإيموجي اللي هزيتي من السيرفر ديالك هنايا.
+# إلا خليتي الـ id = None غايخدم بالإيموجي العادي (Default) تلقائياً.
+
 CUSTOM_EMOJIS = {
     "PayPal": {"name": "paypal", "id": None, "animated": False},
     "Bank Transfer Portal / RIB": {"name": "bank", "id": None, "animated": False},
@@ -90,9 +93,9 @@ CUSTOM_RANK_EMOJIS = {
     "Diamond I": {"name": "diamond1", "id": None, "animated": False},
     "Diamond II": {"name": "diamond2", "id": None, "animated": False},
     "Diamond III": {"name": "diamond3", "id": None, "animated": False},
-    "Mythic I": {"name": "mythic1", "id": None, "animated": False},
-    "Mythic II": {"name": "mythic2", "id": None, "animated": False},
-    "Mythic III": {"name": "mythic3", "id": None, "animated": False},
+    "Mythic I": {"name": "mythic", "id": 1534572012658495629, "animated": False},
+    "Mythic II": {"name": "mythic", "id": 1534572012658495629, "animated": False},
+    "Mythic III": {"name": "mythic", "id": 1534572012658495629, "animated": False},
     "Legendary I": {"name": "legendary1", "id": None, "animated": False},
     "Legendary II": {"name": "legendary2", "id": None, "animated": False},
     "Legendary III": {"name": "legendary3", "id": None, "animated": False},
@@ -158,13 +161,7 @@ RANK_PRICES = {
 
 RANKS_ORDER = list(RANK_PRICES.keys())
 
-# Current Rank List: Bronze I -> Masters II
-CURRENT_RANKS = RANKS_ORDER[:RANKS_ORDER.index("Pro")]
-
-# Desired Rank List: Diamond I -> Pro
-DESIRED_RANKS = RANKS_ORDER[RANKS_ORDER.index("Diamond I"):]
-
-# Power 11 Brawlers options
+# Power 11 Brawlers options (0 to 20+)
 POWER_11_OPTIONS = [
     discord.SelectOption(label="0 Brawlers", value="0", emoji=get_custom_or_default_emoji("0", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
     discord.SelectOption(label="1 Brawler", value="1", emoji=get_custom_or_default_emoji("1", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
@@ -433,12 +430,11 @@ class OrderSelectionView(View):
         self.selected_power_11 = None
         self.selected_payment_method = None
 
-        # خيارات الـ Current Rank (من Bronze I إلى Masters II)
         rank_options_1 = [
             discord.SelectOption(
                 label=r, 
                 emoji=get_custom_or_default_emoji(r, CUSTOM_RANK_EMOJIS, DEFAULT_RANK_EMOJIS)
-            ) for r in CURRENT_RANKS
+            ) for r in RANKS_ORDER
         ]
         self.current_select = Select(placeholder="Select your current rank...", options=rank_options_1[:25], custom_id="sel_curr_rank")
         self.current_select.callback = self.current_rank_callback
@@ -448,25 +444,25 @@ class OrderSelectionView(View):
         self.selected_current_rank = self.current_select.values[0]
         
         self.clear_items()
+        
+        start_idx = RANKS_ORDER.index(self.selected_current_rank)
+        available_desired_ranks = RANKS_ORDER[start_idx + 1:]
 
-        # فلترة خيارات الـ Desired Rank لإظهار الرتب الأعلى فقط من الرتبة الحالية
-        try:
-            current_idx = RANKS_ORDER.index(self.selected_current_rank)
-            valid_desired = [r for r in DESIRED_RANKS if RANKS_ORDER.index(r) > current_idx]
-        except ValueError:
-            valid_desired = DESIRED_RANKS
-
-        if not valid_desired:
-            valid_desired = [DESIRED_RANKS[-1]]
+        if not available_desired_ranks:
+            await interaction.response.send_message("❌ You are already at the highest rank!", ephemeral=True)
+            return
 
         rank_options_2 = [
             discord.SelectOption(
                 label=r, 
                 emoji=get_custom_or_default_emoji(r, CUSTOM_RANK_EMOJIS, DEFAULT_RANK_EMOJIS)
-            ) for r in valid_desired
+            ) for r in available_desired_ranks
         ]
-
-        desired_select = Select(placeholder=f"Current: {self.selected_current_rank} ➔ Select desired rank...", options=rank_options_2[:25], custom_id="sel_des_rank")
+        desired_select = Select(
+            placeholder=f"Current: {self.selected_current_rank} ➔ Select desired rank...", 
+            options=rank_options_2[:25], 
+            custom_id="sel_des_rank"
+        )
         desired_select.callback = self.desired_rank_callback
         self.add_item(desired_select)
         
