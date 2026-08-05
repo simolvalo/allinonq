@@ -69,6 +69,20 @@ PAYMENT_OPTIONS = [
     discord.SelectOption(label="Tether (USDT)", emoji="🪙")
 ]
 
+# Power 11 Brawlers options (0 to 20+)
+POWER_11_OPTIONS = [
+    discord.SelectOption(label="0 Brawlers", value="0"),
+    discord.SelectOption(label="1 Brawler", value="1"),
+    discord.SelectOption(label="2 Brawlers", value="2"),
+    discord.SelectOption(label="3 Brawlers", value="3"),
+    discord.SelectOption(label="4 Brawlers", value="4"),
+    discord.SelectOption(label="5 Brawlers", value="5"),
+    discord.SelectOption(label="6 - 10 Brawlers", value="6-10"),
+    discord.SelectOption(label="11 - 15 Brawlers", value="11-15"),
+    discord.SelectOption(label="16 - 20 Brawlers", value="16-20"),
+    discord.SelectOption(label="20+ Brawlers", value="20+")
+]
+
 def calculate_price(current_rank: str, desired_rank: str, order_type: str) -> float:
     try:
         start_idx = RANKS_ORDER.index(current_rank)
@@ -168,11 +182,12 @@ class TicketControlsView(View):
 
 # Final Modal (Only Additional Notes)
 class FinalDetailsModal(Modal):
-    def __init__(self, order_type: str, current_rank: str, desired_rank: str, payment_method: str):
+    def __init__(self, order_type: str, current_rank: str, desired_rank: str, power_11_count: str, payment_method: str):
         super().__init__(title=f"Ranked Boost ({order_type})")
         self.order_type = order_type
         self.current_rank = current_rank
         self.desired_rank = desired_rank
+        self.power_11_count = power_11_count
         self.payment_method = payment_method
 
         self.additional_notes = TextInput(
@@ -231,6 +246,7 @@ class FinalDetailsModal(Modal):
         )
         details_embed.add_field(name="Current Rank 🛡️", value=f"└ `{self.current_rank}`", inline=False)
         details_embed.add_field(name="Desired Rank 🏆", value=f"└ `{self.desired_rank}`", inline=False)
+        details_embed.add_field(name="Power 11 Brawlers ⚡", value=f"└ `{self.power_11_count}`", inline=False)
         details_embed.add_field(name="Order Type 🚀", value=f"└ `{self.order_type}`", inline=False)
         details_embed.add_field(name="Total Price 💰", value=f"└ `{price_str}`", inline=False)
         details_embed.add_field(name="Payment Method 💳", value=f"└ `{self.payment_method}`", inline=False)
@@ -256,6 +272,7 @@ class OrderSelectionView(View):
         self.order_type = order_type
         self.selected_current_rank = None
         self.selected_desired_rank = None
+        self.selected_power_11 = None
         self.selected_payment_method = None
 
         # 1. Select Current Rank
@@ -279,25 +296,40 @@ class OrderSelectionView(View):
     async def desired_rank_callback(self, interaction: discord.Interaction):
         self.selected_desired_rank = interaction.data["values"][0]
 
-        # 3. Select Payment Method
+        # 3. Select Power 11 Brawlers
+        self.clear_items()
+        power11_select = Select(placeholder="Select number of Power 11 Brawlers...", options=POWER_11_OPTIONS, custom_id="sel_power_11")
+        power11_select.callback = self.power_11_callback
+        self.add_item(power11_select)
+
+        await interaction.response.edit_message(
+            content=f"✅ Current: **{self.selected_current_rank}** ➔ Desired: **{self.selected_desired_rank}**\nNow select how many **Power 11 Brawlers** you have:",
+            view=self
+        )
+
+    async def power_11_callback(self, interaction: discord.Interaction):
+        self.selected_power_11 = interaction.data["values"][0]
+
+        # 4. Select Payment Method
         self.clear_items()
         payment_select = Select(placeholder="Select your payment method...", options=PAYMENT_OPTIONS[:25], custom_id="sel_pay_method")
         payment_select.callback = self.payment_method_callback
         self.add_item(payment_select)
 
         await interaction.response.edit_message(
-            content=f"✅ Current: **{self.selected_current_rank}** ➔ Desired: **{self.selected_desired_rank}**\nNow choose payment method:", 
+            content=f"✅ Current: **{self.selected_current_rank}** ➔ Desired: **{self.selected_desired_rank}** ➔ Power 11: **{self.selected_power_11}**\nNow choose payment method:",
             view=self
         )
 
     async def payment_method_callback(self, interaction: discord.Interaction):
         self.selected_payment_method = interaction.data["values"][0]
 
-        # 4. Open Modal for Notes
+        # 5. Open Modal for Notes
         modal = FinalDetailsModal(
             order_type=self.order_type,
             current_rank=self.selected_current_rank,
             desired_rank=self.selected_desired_rank,
+            power_11_count=self.selected_power_11,
             payment_method=self.selected_payment_method
         )
         await interaction.response.send_modal(modal)
