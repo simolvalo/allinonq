@@ -136,7 +136,7 @@ class TicketControlsView(View):
         )
         await interaction.response.send_message(embed=embed)
 
-# Order Modal with Select Menus (Form matched with Discord Modal Select API)
+# Order Modal with Select Menus
 class RankedOrderModal(Modal):
     def __init__(self, order_type: str):
         super().__init__(title=f"Ranked Boost Order ({order_type})")
@@ -190,6 +190,9 @@ class RankedOrderModal(Modal):
         self.add_item(self.additional_notes)
 
     async def on_submit(self, interaction: discord.Interaction):
+        # FIX: Defer immediately to prevent Discord interaction timeout (3s limit)
+        await interaction.response.defer(ephemeral=True)
+
         c_rank = self.current_rank.values[0]
         d_rank = self.desired_rank.values[0]
         p_11 = self.power_11.values[0]
@@ -203,13 +206,11 @@ class RankedOrderModal(Modal):
         if category:
             for channel in category.text_channels:
                 if channel.name == f"order-{interaction.user.name}".lower():
-                    await interaction.response.send_message(
+                    await interaction.followup.send(
                         content=f"❌ You already have an open ticket: {channel.mention}. Close it first!",
                         ephemeral=True
                     )
                     return
-
-        await interaction.response.defer(ephemeral=True)
 
         total_price = calculate_price(c_rank, d_rank, self.order_type)
         price_str = f"${total_price} USD" if total_price > 0 else "Custom Pricing"
@@ -300,7 +301,6 @@ async def setup_panel(interaction: discord.Interaction):
     embed2 = Embed(color=0x8A2BE2)
     embed2.set_image(url=IMAGE_PRICES_2)
 
-    # Sending both embeds in ONE message so both images appear stacked nicely under 1 panel button
     await interaction.channel.send(embeds=[embed1, embed2], view=MainTicketView())
     await interaction.response.send_message("Panel created successfully!", ephemeral=True)
 
