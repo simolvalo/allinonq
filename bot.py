@@ -19,7 +19,6 @@ PAYMENT_DETAILS = {
     "PayPal": f"🅿️ **PayPal Details:**\n```\n{MY_PAYPAL_INFO}\n```",
     "Bank Transfer Portal / RIB": f"🏦 **Bank Transfer Details (RIB):**\n```\n{MY_RIB_INFO}\n```",
     "Venmo": "🔹 **Venmo Details:**\n```\nVenmo ID: @Omarjr\n```",
-    "Cash App": "💵 **Cash App Details:**\n```\nCash Tag: $Omarjr\n```",
     "Wise": "🌐 **Wise Details:**\n```\nWise Email: Omarjr@wise.com\n```",
     "Apple Pay": "🍎 **Apple Pay Details:**\n```\nPhone / Email: Omarjr\n```",
     "Zelle": "⚡ **Zelle Details:**\n```\nZelle Email/Phone: Omarjr\n```",
