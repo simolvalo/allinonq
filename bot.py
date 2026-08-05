@@ -39,8 +39,7 @@ IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1254112291096363150/153
 
 # ================= CUSTOM EMOJIS CONFIGURATION =================
 # حط الـ name والـ id ديال الإيموجي اللي هزيتي من السيرفر ديالك هنايا.
-# مثال: "PayPal": {"name": "paypal_icon", "id": 123456789012345678, "animated": False}
-# إلا خليتي الـ id = None غايخدم بالإيموجي العادي تلقائياً.
+# إلا خليتي الـ id = None غايخدم بالإيموجي العادي (Default) تلقائياً.
 
 CUSTOM_EMOJIS = {
     "PayPal": {"name": "paypal", "id": None, "animated": False},
@@ -80,18 +79,72 @@ DEFAULT_EMOJIS = {
     "Tether (USDT)": "💵"
 }
 
-def get_payment_emoji(label: str):
-    custom = CUSTOM_EMOJIS.get(label)
+# ----------------- RANKS EMOJIS -----------------
+CUSTOM_RANK_EMOJIS = {
+    "Bronze I": {"name": "bronze1", "id": None, "animated": False},
+    "Bronze II": {"name": "bronze2", "id": None, "animated": False},
+    "Bronze III": {"name": "bronze3", "id": None, "animated": False},
+    "Silver I": {"name": "silver1", "id": None, "animated": False},
+    "Silver II": {"name": "silver2", "id": None, "animated": False},
+    "Silver III": {"name": "silver3", "id": None, "animated": False},
+    "Gold I": {"name": "gold1", "id": None, "animated": False},
+    "Gold II": {"name": "gold2", "id": None, "animated": False},
+    "Gold III": {"name": "gold3", "id": None, "animated": False},
+    "Diamond I": {"name": "diamond1", "id": None, "animated": False},
+    "Diamond II": {"name": "diamond2", "id": None, "animated": False},
+    "Diamond III": {"name": "diamond3", "id": None, "animated": False},
+    "Mythic I": {"name": "mythic", "id": 1534572012658495629, "animated": False},
+    "Mythic II": {"name": "mythic", "id": 1534572012658495629, "animated": False},
+    "Mythic III": {"name": "mythic", "id": 1534572012658495629, "animated": False},
+    "Legendary I": {"name": "legendary1", "id": None, "animated": False},
+    "Legendary II": {"name": "legendary2", "id": None, "animated": False},
+    "Legendary III": {"name": "legendary3", "id": None, "animated": False},
+    "Masters I": {"name": "masters1", "id": None, "animated": False},
+    "Masters II": {"name": "masters2", "id": None, "animated": False},
+    "Pro": {"name": "pro", "id": None, "animated": False}
+}
+
+DEFAULT_RANK_EMOJIS = {
+    "Bronze I": "🥉", "Bronze II": "🥉", "Bronze III": "🥉",
+    "Silver I": "🥈", "Silver II": "🥈", "Silver III": "🥈",
+    "Gold I": "🥇", "Gold II": "🥇", "Gold III": "🥇",
+    "Diamond I": "💎", "Diamond II": "💎", "Diamond III": "💎",
+    "Mythic I": "🔮", "Mythic II": "🔮", "Mythic III": "🔮",
+    "Legendary I": "👑", "Legendary II": "👑", "Legendary III": "👑",
+    "Masters I": "🔥", "Masters II": "🔥", "Pro": "⚡"
+}
+
+# ----------------- POWER 11 EMOJIS -----------------
+CUSTOM_POWER11_EMOJIS = {
+    "0": {"name": "power_0", "id": None, "animated": False},
+    "1": {"name": "power_1", "id": None, "animated": False},
+    "2": {"name": "power_2", "id": None, "animated": False},
+    "3": {"name": "power_3", "id": None, "animated": False},
+    "4": {"name": "power_4", "id": None, "animated": False},
+    "5": {"name": "power_5", "id": None, "animated": False},
+    "6-10": {"name": "power_6_10", "id": None, "animated": False},
+    "11-15": {"name": "power_11_15", "id": None, "animated": False},
+    "16-20": {"name": "power_16_20", "id": None, "animated": False},
+    "20+": {"name": "power_20plus", "id": None, "animated": False}
+}
+
+DEFAULT_POWER11_EMOJIS = {
+    "0": "❌", "1": "⚡", "2": "⚡", "3": "⚡", "4": "⚡", "5": "⚡",
+    "6-10": "🔥", "11-15": "🔥", "16-20": "🌟", "20+": "👑"
+}
+
+def get_custom_or_default_emoji(label: str, custom_dict: dict, default_dict: dict, fallback="⭐"):
+    custom = custom_dict.get(label)
     if custom and custom.get("id"):
         return discord.PartialEmoji(
             name=custom["name"],
             id=custom["id"],
             animated=custom.get("animated", False)
         )
-    return DEFAULT_EMOJIS.get(label, "💳")
+    return default_dict.get(label, fallback)
 
 PAYMENT_OPTIONS = [
-    discord.SelectOption(label=label, emoji=get_payment_emoji(label))
+    discord.SelectOption(label=label, emoji=get_custom_or_default_emoji(label, CUSTOM_EMOJIS, DEFAULT_EMOJIS, "💳"))
     for label in DEFAULT_EMOJIS.keys()
 ]
 
@@ -110,16 +163,16 @@ RANKS_ORDER = list(RANK_PRICES.keys())
 
 # Power 11 Brawlers options (0 to 20+)
 POWER_11_OPTIONS = [
-    discord.SelectOption(label="0 Brawlers", value="0"),
-    discord.SelectOption(label="1 Brawler", value="1"),
-    discord.SelectOption(label="2 Brawlers", value="2"),
-    discord.SelectOption(label="3 Brawlers", value="3"),
-    discord.SelectOption(label="4 Brawlers", value="4"),
-    discord.SelectOption(label="5 Brawlers", value="5"),
-    discord.SelectOption(label="6 - 10 Brawlers", value="6-10"),
-    discord.SelectOption(label="11 - 15 Brawlers", value="11-15"),
-    discord.SelectOption(label="16 - 20 Brawlers", value="16-20"),
-    discord.SelectOption(label="20+ Brawlers", value="20+")
+    discord.SelectOption(label="0 Brawlers", value="0", emoji=get_custom_or_default_emoji("0", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="1 Brawler", value="1", emoji=get_custom_or_default_emoji("1", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="2 Brawlers", value="2", emoji=get_custom_or_default_emoji("2", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="3 Brawlers", value="3", emoji=get_custom_or_default_emoji("3", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="4 Brawlers", value="4", emoji=get_custom_or_default_emoji("4", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="5 Brawlers", value="5", emoji=get_custom_or_default_emoji("5", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="6 - 10 Brawlers", value="6-10", emoji=get_custom_or_default_emoji("6-10", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="11 - 15 Brawlers", value="11-15", emoji=get_custom_or_default_emoji("11-15", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="16 - 20 Brawlers", value="16-20", emoji=get_custom_or_default_emoji("16-20", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="20+ Brawlers", value="20+", emoji=get_custom_or_default_emoji("20+", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS))
 ]
 
 def calculate_price(current_rank: str, desired_rank: str, order_type: str) -> float:
@@ -377,7 +430,12 @@ class OrderSelectionView(View):
         self.selected_power_11 = None
         self.selected_payment_method = None
 
-        rank_options_1 = [discord.SelectOption(label=r) for r in RANKS_ORDER]
+        rank_options_1 = [
+            discord.SelectOption(
+                label=r, 
+                emoji=get_custom_or_default_emoji(r, CUSTOM_RANK_EMOJIS, DEFAULT_RANK_EMOJIS)
+            ) for r in RANKS_ORDER
+        ]
         self.current_select = Select(placeholder="Select your current rank...", options=rank_options_1[:25], custom_id="sel_curr_rank")
         self.current_select.callback = self.current_rank_callback
         self.add_item(self.current_select)
@@ -386,7 +444,12 @@ class OrderSelectionView(View):
         self.selected_current_rank = self.current_select.values[0]
         
         self.clear_items()
-        rank_options_2 = [discord.SelectOption(label=r) for r in RANKS_ORDER]
+        rank_options_2 = [
+            discord.SelectOption(
+                label=r, 
+                emoji=get_custom_or_default_emoji(r, CUSTOM_RANK_EMOJIS, DEFAULT_RANK_EMOJIS)
+            ) for r in RANKS_ORDER
+        ]
         desired_select = Select(placeholder=f"Current: {self.selected_current_rank} ➔ Select desired rank...", options=rank_options_2[:25], custom_id="sel_des_rank")
         desired_select.callback = self.desired_rank_callback
         self.add_item(desired_select)
@@ -394,7 +457,7 @@ class OrderSelectionView(View):
         await interaction.response.edit_message(content=f"✅ Current Rank: **{self.selected_current_rank}**\nNow pick your desired rank:", view=self)
 
     async def desired_rank_callback(self, interaction: discord.Interaction):
-        self.selected_desired_rank = self.current_select.values[0] if hasattr(self, 'current_select') and self.current_select.values else interaction.data["values"][0]
+        self.selected_desired_rank = interaction.data["values"][0]
 
         self.clear_items()
         power11_select = Select(placeholder="Select number of Power 11 Brawlers...", options=POWER_11_OPTIONS, custom_id="sel_power_11")
