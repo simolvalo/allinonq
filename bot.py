@@ -15,7 +15,6 @@ MY_RIB_INFO = "Bank: CIH BANK\nRIB: 0644507960825345253\nName: Omar"
 MY_PAYPAL_INFO = "PayPal Email: Omarjr"
 
 # ================= Custom Emojis Configuration =================
-# Beddel had l-IDs (123456789012345678) b l-IDs l-haqiqiyin d l-emojis f-server dyalek
 CUSTOM_EMOJIS = {
     "paypal": "<:paypal:123456789012345678>",
     "bank": "<:bank:123456789012345678>",
@@ -348,6 +347,7 @@ class OrderSelectionView(View):
         self.add_item(self.current_select)
 
     async def current_rank_callback(self, interaction: discord.Interaction):
+        await interaction.response.defer()
         self.selected_current_rank = self.current_select.values[0]
         
         # 2. Select Desired Rank
@@ -357,9 +357,11 @@ class OrderSelectionView(View):
         desired_select.callback = self.desired_rank_callback
         self.add_item(desired_select)
         
-        await interaction.response.edit_message(content=f"✅ Current Rank: **{self.selected_current_rank}**\nNow pick your desired rank:", view=self)
+        await interaction.edit_original_response(content=f"✅ Current Rank: **{self.selected_current_rank}**\nNow pick your desired rank:", view=self)
 
     async def desired_rank_callback(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        select_component = interaction.data
         self.selected_desired_rank = interaction.data["values"][0]
 
         # 3. Select Power 11 Brawlers
@@ -368,12 +370,13 @@ class OrderSelectionView(View):
         power11_select.callback = self.power_11_callback
         self.add_item(power11_select)
 
-        await interaction.response.edit_message(
+        await interaction.edit_original_response(
             content=f"✅ Current: **{self.selected_current_rank}** ➔ Desired: **{self.selected_desired_rank}**\nNow select how many **Power 11 Brawlers** you have:",
             view=self
         )
 
     async def power_11_callback(self, interaction: discord.Interaction):
+        await interaction.response.defer()
         self.selected_power_11 = interaction.data["values"][0]
 
         # 4. Select Payment Method
@@ -382,7 +385,7 @@ class OrderSelectionView(View):
         payment_select.callback = self.payment_method_callback
         self.add_item(payment_select)
 
-        await interaction.response.edit_message(
+        await interaction.edit_original_response(
             content=f"✅ Current: **{self.selected_current_rank}** ➔ Desired: **{self.selected_desired_rank}** ➔ Power 11: **{self.selected_power_11}**\nNow choose payment method:",
             view=self
         )
