@@ -37,6 +37,65 @@ PAYMENT_DETAILS = {
 IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534346676989464587/image.png"
 IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534347605138739250/image.png"
 
+# ================= CUSTOM EMOJIS CONFIGURATION =================
+# حط الـ name والـ id ديال الإيموجي اللي هزيتي من السيرفر ديالك هنايا.
+# مثال: "PayPal": {"name": "paypal_icon", "id": 123456789012345678, "animated": False}
+# إلا خليتي الـ id = None غايخدم بالإيموجي العادي تلقائياً.
+
+CUSTOM_EMOJIS = {
+    "PayPal": {"name": "paypal", "id": None, "animated": False},
+    "Bank Transfer Portal / RIB": {"name": "bank", "id": None, "animated": False},
+    "Venmo": {"name": "venmo", "id": None, "animated": False},
+    "Cash App": {"name": "cashapp", "id": None, "animated": False},
+    "Wise": {"name": "wise", "id": None, "animated": False},
+    "Apple Pay": {"name": "applepay", "id": None, "animated": False},
+    "Zelle": {"name": "zelle", "id": None, "animated": False},
+    "Binance": {"name": "binance", "id": None, "animated": False},
+    "Revolut": {"name": "revolut", "id": None, "animated": False},
+    "Chime": {"name": "chime", "id": None, "animated": False},
+    "Skrill": {"name": "skrill", "id": None, "animated": False},
+    "Bitcoin": {"name": "bitcoin", "id": None, "animated": False},
+    "Litecoin": {"name": "litecoin", "id": None, "animated": False},
+    "Ethereum": {"name": "ethereum", "id": None, "animated": False},
+    "Solana": {"name": "solana", "id": None, "animated": False},
+    "Tether (USDT)": {"name": "usdt", "id": None, "animated": False},
+}
+
+DEFAULT_EMOJIS = {
+    "PayPal": "🅿️",
+    "Bank Transfer Portal / RIB": "🏦",
+    "Venmo": "🔹",
+    "Cash App": "💵",
+    "Wise": "🌐",
+    "Apple Pay": "🍎",
+    "Zelle": "⚡",
+    "Binance": "🟡",
+    "Revolut": "💳",
+    "Chime": "🟢",
+    "Skrill": "🟣",
+    "Bitcoin": "🪙",
+    "Litecoin": "🥈",
+    "Ethereum": "💎",
+    "Solana": "☀️",
+    "Tether (USDT)": "💵"
+}
+
+def get_payment_emoji(label: str):
+    custom = CUSTOM_EMOJIS.get(label)
+    if custom and custom.get("id"):
+        return discord.PartialEmoji(
+            name=custom["name"],
+            id=custom["id"],
+            animated=custom.get("animated", False)
+        )
+    return DEFAULT_EMOJIS.get(label, "💳")
+
+PAYMENT_OPTIONS = [
+    discord.SelectOption(label=label, emoji=get_payment_emoji(label))
+    for label in DEFAULT_EMOJIS.keys()
+]
+
+# ================= RANK CONFIGURATION =================
 RANK_PRICES = {
     "Bronze I": 0, "Bronze II": 1, "Bronze III": 1,
     "Silver I": 1, "Silver II": 1.5, "Silver III": 1.5,
@@ -48,26 +107,6 @@ RANK_PRICES = {
 }
 
 RANKS_ORDER = list(RANK_PRICES.keys())
-
-# Payment options
-PAYMENT_OPTIONS = [
-    discord.SelectOption(label="PayPal", emoji="🅿️"),
-    discord.SelectOption(label="Bank Transfer Portal / RIB", emoji="🏦"),
-    discord.SelectOption(label="Venmo", emoji="🔹"),
-    discord.SelectOption(label="Cash App", emoji="💵"),
-    discord.SelectOption(label="Wise", emoji="🌐"),
-    discord.SelectOption(label="Apple Pay", emoji="🍎"),
-    discord.SelectOption(label="Zelle", emoji="⚡"),
-    discord.SelectOption(label="Binance", emoji="🟡"),
-    discord.SelectOption(label="Revolut", emoji="💳"),
-    discord.SelectOption(label="Chime", emoji="🟢"),
-    discord.SelectOption(label="Skrill", emoji="🟣"),
-    discord.SelectOption(label="Bitcoin", emoji="🪙"),
-    discord.SelectOption(label="Litecoin", emoji="🥈"),
-    discord.SelectOption(label="Ethereum", emoji="💎"),
-    discord.SelectOption(label="Solana", emoji="☀️"),
-    discord.SelectOption(label="Tether (USDT)", emoji="💵")
-]
 
 # Power 11 Brawlers options (0 to 20+)
 POWER_11_OPTIONS = [
@@ -244,7 +283,6 @@ class FinalDetailsModal(Modal):
         self.add_item(self.additional_notes)
 
     async def on_submit(self, interaction: discord.Interaction):
-        # 1. IMMEDIATE Deferment to prevent "n'a pas répondu à temps"
         await interaction.response.defer(ephemeral=True)
 
         notes = self.additional_notes.value.strip() or "None"
@@ -310,7 +348,6 @@ class FinalDetailsModal(Modal):
         await interaction.followup.send(f"Ticket created successfully! {ticket_channel.mention}", ephemeral=True)
 
 
-# Interactive Dropdown Selection Flow + Open Modal via Button to prevent API Timeout
 class OpenModalView(View):
     def __init__(self, order_type, current_rank, desired_rank, power_11_count, payment_method):
         super().__init__(timeout=180)
@@ -340,7 +377,6 @@ class OrderSelectionView(View):
         self.selected_power_11 = None
         self.selected_payment_method = None
 
-        # 1. Select Current Rank
         rank_options_1 = [discord.SelectOption(label=r) for r in RANKS_ORDER]
         self.current_select = Select(placeholder="Select your current rank...", options=rank_options_1[:25], custom_id="sel_curr_rank")
         self.current_select.callback = self.current_rank_callback
@@ -349,7 +385,6 @@ class OrderSelectionView(View):
     async def current_rank_callback(self, interaction: discord.Interaction):
         self.selected_current_rank = self.current_select.values[0]
         
-        # 2. Select Desired Rank
         self.clear_items()
         rank_options_2 = [discord.SelectOption(label=r) for r in RANKS_ORDER]
         desired_select = Select(placeholder=f"Current: {self.selected_current_rank} ➔ Select desired rank...", options=rank_options_2[:25], custom_id="sel_des_rank")
@@ -361,7 +396,6 @@ class OrderSelectionView(View):
     async def desired_rank_callback(self, interaction: discord.Interaction):
         self.selected_desired_rank = self.current_select.values[0] if hasattr(self, 'current_select') and self.current_select.values else interaction.data["values"][0]
 
-        # 3. Select Power 11 Brawlers
         self.clear_items()
         power11_select = Select(placeholder="Select number of Power 11 Brawlers...", options=POWER_11_OPTIONS, custom_id="sel_power_11")
         power11_select.callback = self.power_11_callback
@@ -375,7 +409,6 @@ class OrderSelectionView(View):
     async def power_11_callback(self, interaction: discord.Interaction):
         self.selected_power_11 = interaction.data["values"][0]
 
-        # 4. Select Payment Method
         self.clear_items()
         payment_select = Select(placeholder="Select your payment method...", options=PAYMENT_OPTIONS[:25], custom_id="sel_pay_method")
         payment_select.callback = self.payment_method_callback
@@ -389,7 +422,6 @@ class OrderSelectionView(View):
     async def payment_method_callback(self, interaction: discord.Interaction):
         self.selected_payment_method = interaction.data["values"][0]
 
-        # Fix: Show button to trigger Modal safely avoiding Discord API interaction dropouts
         view = OpenModalView(
             order_type=self.order_type,
             current_rank=self.selected_current_rank,
