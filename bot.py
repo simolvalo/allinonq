@@ -14,24 +14,46 @@ STAFF_ROLE_ID = 1534345538080870480
 MY_RIB_INFO = "Bank: CIH BANK\nRIB: 0644507960825345253\nName: Omar"
 MY_PAYPAL_INFO = "PayPal Email: Omarjr"
 
+# ================= Custom Emojis Configuration =================
+# Beddel had l-IDs (123456789012345678) b l-IDs l-haqiqiyin d l-emojis f-server dyalek
+CUSTOM_EMOJIS = {
+    "paypal": "<:paypal:123456789012345678>",
+    "bank": "<:bank:123456789012345678>",
+    "venmo": "<:venmo:123456789012345678>",
+    "cashapp": "<:cashapp:123456789012345678>",
+    "wise": "<:wise:123456789012345678>",
+    "applepay": "<:applepay:123456789012345678>",
+    "zelle": "<:zelle:123456789012345678>",
+    "binance": "<:binance:123456789012345678>",
+    "revolut": "<:revolut:123456789012345678>",
+    "chime": "<:chime:123456789012345678>",
+    "skrill": "<:skrill:123456789012345678>",
+    "btc": "<:btc:123456789012345678>",
+    "ltc": "<:ltc:123456789012345678>",
+    "eth": "<:eth:123456789012345678>",
+    "sol": "<:sol:123456789012345678>",
+    "usdt": "<:usdt:123456789012345678>"
+    "Solana": "<:solana:1534559022730969160>"
+}
+
 # Dynamic payment details dictionary
 PAYMENT_DETAILS = {
-    "PayPal": f"🅿️ **PayPal Details:**\n```\n{MY_PAYPAL_INFO}\n```",
-    "Bank Transfer Portal / RIB": f"🏦 **Bank Transfer Details (RIB):**\n```\n{MY_RIB_INFO}\n```",
-    "Venmo": "💸 **Venmo Details:**\n```\nVenmo ID: @Omarjr\n```",
-    "Cash App": "💵 **Cash App Details:**\n```\nCash Tag: $Omarjr\n```",
-    "Wise": "🌍 **Wise Details:**\n```\nWise Email: Omarjr@wise.com\n```",
-    "Apple Pay": "🍎 **Apple Pay Details:**\n```\nPhone / Email: Omarjr\n```",
-    "Zelle": "⚡ **Zelle Details:**\n```\nZelle Email/Phone: Omarjr\n```",
-    "Binance": "🟡 **Binance Details:**\n```\nBinance Pay ID: 123456789\n```",
-    "Revolut": "💳 **Revolut Details:**\n```\nRevolut Tag: @Omarjr\n```",
-    "Chime": "🟢 **Chime Details:**\n```\nChime Sign: $Omarjr\n```",
-    "Skrill": "🟣 **Skrill Details:**\n```\nSkrill Email: Omarjr\n```",
-    "Bitcoin": "🪙 **Bitcoin Wallet:**\n```\nBTC Address Here\n```",
-    "Litecoin": "🥈 **Litecoin Wallet:**\n```\nLTC Address Here\n```",
-    "Ethereum": "💎 **Ethereum Wallet:**\n```\nETH Address Here\n```",
-    "Solana": "☀️ **Solana Wallet:**\n```\nSOL Address Here\n```",
-    "Tether (USDT)": "💵 **Tether (USDT TRC20) Wallet:**\n```\nUSDT Address Here\n```"
+    "PayPal": f"{CUSTOM_EMOJIS['paypal']} **PayPal Details:**\n```\n{MY_PAYPAL_INFO}\n```",
+    "Bank Transfer Portal / RIB": f"{CUSTOM_EMOJIS['bank']} **Bank Transfer Details (RIB):**\n```\n{MY_RIB_INFO}\n```",
+    "Venmo": f"{CUSTOM_EMOJIS['venmo']} **Venmo Details:**\n```\nVenmo ID: @Omarjr\n```",
+    "Cash App": f"{CUSTOM_EMOJIS['cashapp']} **Cash App Details:**\n```\nCash Tag: $Omarjr\n```",
+    "Wise": f"{CUSTOM_EMOJIS['wise']} **Wise Details:**\n```\nWise Email: Omarjr@wise.com\n```",
+    "Apple Pay": f"{CUSTOM_EMOJIS['applepay']} **Apple Pay Details:**\n```\nPhone / Email: Omarjr\n```",
+    "Zelle": f"{CUSTOM_EMOJIS['zelle']} **Zelle Details:**\n```\nZelle Email/Phone: Omarjr\n```",
+    "Binance": f"{CUSTOM_EMOJIS['binance']} **Binance Details:**\n```\nBinance Pay ID: 123456789\n```",
+    "Revolut": f"{CUSTOM_EMOJIS['revolut']} **Revolut Details:**\n```\nRevolut Tag: @Omarjr\n```",
+    "Chime": f"{CUSTOM_EMOJIS['chime']} **Chime Details:**\n```\nChime Sign: $Omarjr\n```",
+    "Skrill": f"{CUSTOM_EMOJIS['skrill']} **Skrill Details:**\n```\nSkrill Email: Omarjr\n```",
+    "Bitcoin": f"{CUSTOM_EMOJIS['btc']} **Bitcoin Wallet:**\n```\nBTC Address Here\n```",
+    "Litecoin": f"{CUSTOM_EMOJIS['ltc']} **Litecoin Wallet:**\n```\nLTC Address Here\n```",
+    "Ethereum": f"{CUSTOM_EMOJIS['eth']} **Ethereum Wallet:**\n```\nETH Address Here\n```",
+    "Solana": f"{CUSTOM_EMOJIS['sol']} **Solana Wallet:**\n```\nSOL Address Here\n```",
+    "Tether (USDT)": f"{CUSTOM_EMOJIS['usdt']} **Tether (USDT TRC20) Wallet:**\n```\nUSDT Address Here\n```"
 }
 
 IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534346676989464587/image.png"
@@ -49,24 +71,24 @@ RANK_PRICES = {
 
 RANKS_ORDER = list(RANK_PRICES.keys())
 
-# Payment options
+# Payment options with Custom Emojis
 PAYMENT_OPTIONS = [
-    discord.SelectOption(label="PayPal", emoji="🅿️"),
-    discord.SelectOption(label="Bank Transfer Portal / RIB", emoji="🏦"),
-    discord.SelectOption(label="Venmo", emoji="🔹"),
-    discord.SelectOption(label="Cash App", emoji="💵"),
-    discord.SelectOption(label="Wise", emoji="🌐"),
-    discord.SelectOption(label="Apple Pay", emoji="🍎"),
-    discord.SelectOption(label="Zelle", emoji="⚡"),
-    discord.SelectOption(label="Binance", emoji="🟡"),
-    discord.SelectOption(label="Revolut", emoji="💳"),
-    discord.SelectOption(label="Chime", emoji="🟢"),
-    discord.SelectOption(label="Skrill", emoji="🟣"),
-    discord.SelectOption(label="Bitcoin", emoji="🪙"),
-    discord.SelectOption(label="Litecoin", emoji="🪙"),
-    discord.SelectOption(label="Ethereum", emoji="🪙"),
-    discord.SelectOption(label="Solana", emoji="🪙"),
-    discord.SelectOption(label="Tether (USDT)", emoji="🪙")
+    discord.SelectOption(label="PayPal", emoji=CUSTOM_EMOJIS["paypal"]),
+    discord.SelectOption(label="Bank Transfer Portal / RIB", emoji=CUSTOM_EMOJIS["bank"]),
+    discord.SelectOption(label="Venmo", emoji=CUSTOM_EMOJIS["venmo"]),
+    discord.SelectOption(label="Cash App", emoji=CUSTOM_EMOJIS["cashapp"]),
+    discord.SelectOption(label="Wise", emoji=CUSTOM_EMOJIS["wise"]),
+    discord.SelectOption(label="Apple Pay", emoji=CUSTOM_EMOJIS["applepay"]),
+    discord.SelectOption(label="Zelle", emoji=CUSTOM_EMOJIS["zelle"]),
+    discord.SelectOption(label="Binance", emoji=CUSTOM_EMOJIS["binance"]),
+    discord.SelectOption(label="Revolut", emoji=CUSTOM_EMOJIS["revolut"]),
+    discord.SelectOption(label="Chime", emoji=CUSTOM_EMOJIS["chime"]),
+    discord.SelectOption(label="Skrill", emoji=CUSTOM_EMOJIS["skrill"]),
+    discord.SelectOption(label="Bitcoin", emoji=CUSTOM_EMOJIS["btc"]),
+    discord.SelectOption(label="Litecoin", emoji=CUSTOM_EMOJIS["ltc"]),
+    discord.SelectOption(label="Ethereum", emoji=CUSTOM_EMOJIS["eth"]),
+    discord.SelectOption(label="Solana", emoji=CUSTOM_EMOJIS["sol"]),
+    discord.SelectOption(label="Tether (USDT)", emoji=CUSTOM_EMOJIS["usdt"])
 ]
 
 # Power 11 Brawlers options (0 to 20+)
