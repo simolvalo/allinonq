@@ -57,7 +57,7 @@ CUSTOM_EMOJIS = {
     "Bitcoin": {"name": "bitcoin", "id": None, "animated": False},
     "Litecoin": {"name": "litecoin", "id": None, "animated": False},
     "Ethereum": {"name": "ethereum", "id": None, "animated": False},
-    "Solana": {"name": "solana", "id": None, "animated": False},
+    "Solana": {"name": "solana", "id": 1534559022730969160, "animated": False},
     "Tether (USDT)": {"name": "usdt", "id": None, "animated": False},
 }
 
