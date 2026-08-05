@@ -38,9 +38,6 @@ IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/153
 IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534347605138739250/image.png"
 
 # ================= CUSTOM EMOJIS CONFIGURATION =================
-# حط الـ name والـ id ديال الإيموجي اللي هزيتي من السيرفر ديالك هنايا.
-# إلا خليتي الـ id = None غايخدم بالإيموجي العادي (Default) تلقائياً.
-
 CUSTOM_EMOJIS = {
     "PayPal": {"name": "paypal", "id": None, "animated": False},
     "Bank Transfer Portal / RIB": {"name": "bank", "id": None, "animated": False},
@@ -112,26 +109,20 @@ DEFAULT_RANK_EMOJIS = {
     "Diamond I": "💎", "Diamond II": "💎", "Diamond III": "💎",
     "Mythic I": "🔮", "Mythic II": "🔮", "Mythic III": "🔮",
     "Legendary I": "👑", "Legendary II": "👑", "Legendary III": "👑",
-    "Masters I": "🔥", "Masters II": "🔥", "Masters III" : "🔥" , "Pro": "⚡"
+    "Masters I": "🔥", "Masters II": "🔥", "Masters III": "🔥", "Pro": "⚡"
 }
 
 # ----------------- POWER 11 EMOJIS -----------------
 CUSTOM_POWER11_EMOJIS = {
-    "0": {"name": "power_0", "id": None, "animated": False},
-    "1": {"name": "power_1", "id": None, "animated": False},
-    "2": {"name": "power_2", "id": None, "animated": False},
-    "3": {"name": "power_3", "id": None, "animated": False},
-    "4": {"name": "power_4", "id": None, "animated": False},
-    "5": {"name": "power_5", "id": None, "animated": False},
-    "6-10": {"name": "power_6_10", "id": None, "animated": False},
-    "11-15": {"name": "power_11_15", "id": None, "animated": False},
-    "16-20": {"name": "power_16_20", "id": None, "animated": False},
-    "20+": {"name": "power_20plus", "id": None, "animated": False}
+    "0-20": {"name": "power_0_20", "id": None, "animated": False},
+    "20-50": {"name": "power_20_50", "id": None, "animated": False},
+    "70+": {"name": "power_70plus", "id": None, "animated": False}
 }
 
 DEFAULT_POWER11_EMOJIS = {
-    "0": "❌", "1": "⚡", "2": "⚡", "3": "⚡", "4": "⚡", "5": "⚡",
-    "6-10": "🔥", "11-15": "🔥", "16-20": "🌟", "20+": "👑"
+    "0-20": "⚡", 
+    "20-50": "🔥", 
+    "70+": "👑"
 }
 
 def get_custom_or_default_emoji(label: str, custom_dict: dict, default_dict: dict, fallback="⭐"):
@@ -157,23 +148,16 @@ RANK_PRICES = {
     "Diamond I": 2, "Diamond II": 2, "Diamond III": 3,
     "Mythic I": 4, "Mythic II": 5, "Mythic III": 6,
     "Legendary I": 9, "Legendary II": 12, "Legendary III": 15,
-    "Masters I": 30, "Masters II": 60, "Pro": 105
+    "Masters I": 30, "Masters II": 60, "Masters III": 90, "Pro": 105
 }
 
 RANKS_ORDER = list(RANK_PRICES.keys())
 
-# Power 11 Brawlers options (0 to 20+)
+# Power 11 Brawlers options (0-20, 20-50, 70+)
 POWER_11_OPTIONS = [
-    discord.SelectOption(label="0 Brawlers", value="0", emoji=get_custom_or_default_emoji("0", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
-    discord.SelectOption(label="1 Brawler", value="1", emoji=get_custom_or_default_emoji("1", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
-    discord.SelectOption(label="2 Brawlers", value="2", emoji=get_custom_or_default_emoji("2", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
-    discord.SelectOption(label="3 Brawlers", value="3", emoji=get_custom_or_default_emoji("3", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
-    discord.SelectOption(label="4 Brawlers", value="4", emoji=get_custom_or_default_emoji("4", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
-    discord.SelectOption(label="5 Brawlers", value="5", emoji=get_custom_or_default_emoji("5", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
-    discord.SelectOption(label="6 - 10 Brawlers", value="6-10", emoji=get_custom_or_default_emoji("6-10", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
-    discord.SelectOption(label="11 - 15 Brawlers", value="11-15", emoji=get_custom_or_default_emoji("11-15", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
-    discord.SelectOption(label="16 - 20 Brawlers", value="16-20", emoji=get_custom_or_default_emoji("16-20", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
-    discord.SelectOption(label="20+ Brawlers", value="20+", emoji=get_custom_or_default_emoji("20+", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS))
+    discord.SelectOption(label="0 - 20 Brawlers", value="0-20", emoji=get_custom_or_default_emoji("0-20", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="20 - 50 Brawlers", value="20-50", emoji=get_custom_or_default_emoji("20-50", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS)),
+    discord.SelectOption(label="70+ Brawlers", value="70+", emoji=get_custom_or_default_emoji("70+", CUSTOM_POWER11_EMOJIS, DEFAULT_POWER11_EMOJIS))
 ]
 
 def calculate_price(current_rank: str, desired_rank: str, order_type: str) -> float:
