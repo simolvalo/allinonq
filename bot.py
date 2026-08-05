@@ -18,8 +18,9 @@ MY_PAYPAL_INFO = "PayPal Email: Omarjr"
 PAYMENT_DETAILS = {
     "PayPal": f"🅿️ **PayPal Details:**\n```\n{MY_PAYPAL_INFO}\n```",
     "Bank Transfer Portal / RIB": f"🏦 **Bank Transfer Details (RIB):**\n```\n{MY_RIB_INFO}\n```",
-    "Venmo": "🔹 **Venmo Details:**\n```\nVenmo ID: @Omarjr\n```",
-    "Wise": "🌐 **Wise Details:**\n```\nWise Email: Omarjr@wise.com\n```",
+    "Venmo": "💸 **Venmo Details:**\n```\nVenmo ID: @Omarjr\n```",
+    "Cash App": "💵 **Cash App Details:**\n```\nCash Tag: $Omarjr\n```",
+    "Wise": "🌍 **Wise Details:**\n```\nWise Email: Omarjr@wise.com\n```",
     "Apple Pay": "🍎 **Apple Pay Details:**\n```\nPhone / Email: Omarjr\n```",
     "Zelle": "⚡ **Zelle Details:**\n```\nZelle Email/Phone: Omarjr\n```",
     "Binance": "🟡 **Binance Details:**\n```\nBinance Pay ID: 123456789\n```",
@@ -27,10 +28,10 @@ PAYMENT_DETAILS = {
     "Chime": "🟢 **Chime Details:**\n```\nChime Sign: $Omarjr\n```",
     "Skrill": "🟣 **Skrill Details:**\n```\nSkrill Email: Omarjr\n```",
     "Bitcoin": "🪙 **Bitcoin Wallet:**\n```\nBTC Address Here\n```",
-    "Litecoin": "🪙 **Litecoin Wallet:**\n```\nLTC Address Here\n```",
-    "Ethereum": "🪙 **Ethereum Wallet:**\n```\nETH Address Here\n```",
-    "Solana": "🪙 **Solana Wallet:**\n```\nSOL Address Here\n```",
-    "Tether (USDT)": "🪙 **Tether (USDT TRC20) Wallet:**\n```\nUSDT Address Here\n```"
+    "Litecoin": "🥈 **Litecoin Wallet:**\n```\nLTC Address Here\n```",
+    "Ethereum": "💎 **Ethereum Wallet:**\n```\nETH Address Here\n```",
+    "Solana": "☀️ **Solana Wallet:**\n```\nSOL Address Here\n```",
+    "Tether (USDT)": "💵 **Tether (USDT TRC20) Wallet:**\n```\nUSDT Address Here\n```"
 }
 
 IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534346676989464587/image.png"
