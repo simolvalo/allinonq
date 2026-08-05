@@ -9,7 +9,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 
 BOOST_CATEGORY_ID = 1534328814707151151
 CARRY_CATEGORY_ID = 1534328768611618846
-STAFF_ROLE_ID = 1534345538080870480
+STAFF_ROLE_ID = 1534370879960776764
 
 MY_RIB_INFO = "Bank: CIH BANK\nRIB: 0644507960825345253\nName: Omar"
 MY_PAYPAL_INFO = "PayPal Email: Omarjr"
@@ -133,6 +133,24 @@ class CloseReasonModal(Modal):
         await discord.utils.sleep_until(discord.utils.utcnow() + discord.utils.datetime.timedelta(seconds=5))
         await interaction.channel.delete()
 
+# Modal for Renaming Ticket
+class RenameTicketModal(Modal):
+    def __init__(self):
+        super().__init__(title="Rename Ticket")
+        self.new_name = TextInput(
+            label="New Channel Name",
+            style=TextStyle.short,
+            placeholder="e.g. order-john-done",
+            required=True,
+            max_length=100
+        )
+        self.add_item(self.new_name)
+
+    async def on_submit(self, interaction: discord.Interaction):
+        new_channel_name = self.new_name.value.strip().lower().replace(" ", "-")
+        await interaction.channel.edit(name=new_channel_name)
+        await interaction.response.send_message(f"✏️ Channel renamed to `{new_channel_name}`", ephemeral=False)
+
 # Ticket Controls View
 class TicketControlsView(View):
     def __init__(self, payment_method: str = "Bank Transfer Portal / RIB", payment_enabled: bool = False):
@@ -145,6 +163,9 @@ class TicketControlsView(View):
         self.close_reason_btn = Button(label="Close With Reason", style=ButtonStyle.secondary, emoji="📝", custom_id="ticket_close_reason_btn")
         self.close_reason_btn.callback = self.close_reason_callback
 
+        self.rename_btn = Button(label="Rename", style=ButtonStyle.secondary, emoji="✏️", custom_id="ticket_rename_btn")
+        self.rename_btn.callback = self.rename_callback
+
         self.sent_payment_btn = Button(
             label="I Sent Payment",
             style=ButtonStyle.success,
@@ -156,6 +177,7 @@ class TicketControlsView(View):
 
         self.add_item(self.close_btn)
         self.add_item(self.close_reason_btn)
+        self.add_item(self.rename_btn)
         self.add_item(self.sent_payment_btn)
 
     async def close_callback(self, interaction: discord.Interaction):
@@ -168,6 +190,13 @@ class TicketControlsView(View):
 
     async def close_reason_callback(self, interaction: discord.Interaction):
         await interaction.response.send_modal(CloseReasonModal())
+
+    async def rename_callback(self, interaction: discord.Interaction):
+        has_staff_role = any(role.id == STAFF_ROLE_ID for role in interaction.user.roles)
+        if not has_staff_role and not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message("❌ Only Staff members can rename this ticket!", ephemeral=True)
+            return
+        await interaction.response.send_modal(RenameTicketModal())
 
     async def sent_payment_callback(self, interaction: discord.Interaction):
         default_fallback = f"💳 **Payment Details ({self.payment_method}):**\n```\nContact staff for details.\n```"
