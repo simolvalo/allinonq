@@ -29,7 +29,7 @@ RANK_PRICES = {
 
 RANKS_ORDER = list(RANK_PRICES.keys())
 
-# Ga3 l-mode de paiement mn l-tsawer
+# Payment options
 PAYMENT_OPTIONS = [
     discord.SelectOption(label="PayPal", emoji="🅿️"),
     discord.SelectOption(label="Bank Transfer Portal / RIB", emoji="🏦"),
@@ -149,7 +149,7 @@ class TicketControlsView(View):
         )
         await interaction.response.send_message(embed=embed)
 
-# Final Modal (Only collects extra info like Power 11 & Notes)
+# Final Modal (Only Additional Notes)
 class FinalDetailsModal(Modal):
     def __init__(self, order_type: str, current_rank: str, desired_rank: str, payment_method: str):
         super().__init__(title=f"Ranked Boost ({order_type})")
@@ -158,26 +158,18 @@ class FinalDetailsModal(Modal):
         self.desired_rank = desired_rank
         self.payment_method = payment_method
 
-        self.power_11 = TextInput(
-            label="Number of Power 11 Brawlers",
-            placeholder="e.g. 5, 10, 15+",
-            required=True
-        )
-
         self.additional_notes = TextInput(
             label="Additional Notes (Optional)",
             style=TextStyle.paragraph,
-            placeholder="Any special requests...",
+            placeholder="Any special requests or details...",
             required=False
         )
 
-        self.add_item(self.power_11)
         self.add_item(self.additional_notes)
 
     async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
 
-        p_11 = self.power_11.value.strip()
         notes = self.additional_notes.value.strip() or "None"
 
         category_id = CARRY_CATEGORY_ID if self.order_type == "Carry" else BOOST_CATEGORY_ID
@@ -222,7 +214,6 @@ class FinalDetailsModal(Modal):
         )
         details_embed.add_field(name="Current Rank 🛡️", value=f"└ `{self.current_rank}`", inline=False)
         details_embed.add_field(name="Desired Rank 🏆", value=f"└ `{self.desired_rank}`", inline=False)
-        details_embed.add_field(name="Power 11 Brawlers ⚡", value=f"└ `{p_11}`", inline=False)
         details_embed.add_field(name="Order Type 🚀", value=f"└ `{self.order_type}`", inline=False)
         details_embed.add_field(name="Total Price 💰", value=f"└ `{price_str}`", inline=False)
         details_embed.add_field(name="Payment Method 💳", value=f"└ `{self.payment_method}`", inline=False)
@@ -259,7 +250,7 @@ class OrderSelectionView(View):
     async def current_rank_callback(self, interaction: discord.Interaction):
         self.selected_current_rank = self.current_select.values[0]
         
-        # 2. Update to Select Desired Rank
+        # 2. Select Desired Rank
         self.clear_items()
         rank_options_2 = [discord.SelectOption(label=r) for r in RANKS_ORDER]
         desired_select = Select(placeholder=f"Current: {self.selected_current_rank} ➔ Select desired rank...", options=rank_options_2[:25], custom_id="sel_des_rank")
@@ -271,7 +262,7 @@ class OrderSelectionView(View):
     async def desired_rank_callback(self, interaction: discord.Interaction):
         self.selected_desired_rank = interaction.data["values"][0]
 
-        # 3. Update to Select Payment Method
+        # 3. Select Payment Method
         self.clear_items()
         payment_select = Select(placeholder="Select your payment method...", options=PAYMENT_OPTIONS[:25], custom_id="sel_pay_method")
         payment_select.callback = self.payment_method_callback
@@ -285,7 +276,7 @@ class OrderSelectionView(View):
     async def payment_method_callback(self, interaction: discord.Interaction):
         self.selected_payment_method = interaction.data["values"][0]
 
-        # 4. Open Modal for remaining info
+        # 4. Open Modal for Notes
         modal = FinalDetailsModal(
             order_type=self.order_type,
             current_rank=self.selected_current_rank,
