@@ -28,7 +28,7 @@ PAYMENT_DETAILS = {
     "Chime": "🟢 **Chime Details:**\n```\nChime Sign: $Omarjr\n```",
     "Skrill": "🟣 **Skrill Details:**\n```\nSkrill Email: Omarjr\n```",
     "Bitcoin": "🪙 **Bitcoin Wallet:**\n```\nBTC Address Here\n```",
-    "Litecoin": "🥈 **Litecoin Wallet:**\n```\nLTC Address Here\n```",
+    "Litecoin": "🥈 **Litecoin Wallet:**\n```\LPQruLrYG89cHXMVTMLjDKT9fCRZkU2eCh\n```",
     "Ethereum": "💎 **Ethereum Wallet:**\n```\nETH Address Here\n```",
     "Solana": "☀️ **Solana Wallet:**\n```\nSOL Address Here\n```",
     "Tether (USDT)": "💵 **Tether (USDT TRC20) Wallet:**\n```\nUSDT Address Here\n```"
