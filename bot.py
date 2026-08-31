@@ -44,7 +44,7 @@ CUSTOM_EMOJIS = {
     "Venmo": {"name": "venmo", "id": None, "animated": False},
     "Cash App": {"name": "cashapp", "id": None, "animated": False},
     "Wise": {"name": "wise", "id": None, "animated": False},
-    "Apple Pay": {"name": "applepay", "1534569275564494868": None, "animated": False},
+    "Apple Pay": {"name": "applepay", "id":1534569275564494868, "animated": False},
     "Zelle": {"name": "zelle", "id": None, "animated": False},
     "Binance": {"name": "binance", "id": None, "animated": False},
     "Revolut": {"name": "revolut", "id": None, "animated": False},
