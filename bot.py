@@ -27,10 +27,10 @@ IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1254112291096363150/153
 
 # ================= CUSTOM EMOJIS CONFIGURATION =================
 CUSTOM_EMOJIS = {
-    "PayPal": {"name": "paypal", "id": None, "animated": False},
-    "Apple Pay": {"name": "applepay", "id":1534569275564494868, "animated": False},
-    "Revolut": {"name": "revolut", "id": None, "animated": False},
-    "Litecoin": {"name": "litecoin", "id": None, "animated": False}
+    "PayPal": {"name": "paypal", "id": 1544138840153919640, "animated": False},
+    "Apple Pay": {"name": "applepay", "id":1544139010744778842, "animated": False},
+    "Revolut": {"name": "revolut", "id": 1544139312927342633, "animated": False},
+    "Litecoin": {"name": "litecoin", "id": 1544138952707936329, "animated": False}
 }
 
 DEFAULT_EMOJIS = {
@@ -42,34 +42,22 @@ DEFAULT_EMOJIS = {
 
 # ----------------- RANKS EMOJIS -----------------
 CUSTOM_RANK_EMOJIS = {
-    "Bronze I": {"name": "bronze1", "id": None, "animated": False},
-    "Bronze II": {"name": "bronze2", "id": None, "animated": False},
-    "Bronze III": {"name": "bronze3", "id": None, "animated": False},
-    "Silver I": {"name": "silver1", "id": None, "animated": False},
-    "Silver II": {"name": "silver2", "id": None, "animated": False},
-    "Silver III": {"name": "silver3", "id": None, "animated": False},
-    "Gold I": {"name": "gold1", "id": None, "animated": False},
-    "Gold II": {"name": "gold2", "id": None, "animated": False},
-    "Gold III": {"name": "gold3", "id": None, "animated": False},
-    "Diamond I": {"name": "diamond1", "id": None, "animated": False},
-    "Diamond II": {"name": "diamond2", "id": None, "animated": False},
-    "Diamond III": {"name": "diamond3", "id": None, "animated": False},
-    "Mythic I": {"name": "mythic", "id": 1534572012658495629, "animated": False},
-    "Mythic II": {"name": "mythic", "id": 1534572012658495629, "animated": False},
-    "Mythic III": {"name": "mythic", "id": 1534572012658495629, "animated": False},
-    "Legendary I": {"name": "legendary1", "id": None, "animated": False},
-    "Legendary II": {"name": "legendary2", "id": None, "animated": False},
-    "Legendary III": {"name": "legendary3", "id": None, "animated": False},
-    "Masters I": {"name": "masters1", "id": None, "animated": False},
-    "Masters II": {"name": "masters2", "id": None, "animated": False},
-    "Masters III": {"name": "masters3", "id": None, "animated": False},
-    "Pro": {"name": "pro", "id": None, "animated": False}
+    "Diamond I": {"name": "diamond1", "id": 1544137942514270261, "animated": False},
+    "Diamond II": {"name": "diamond2", "id": 1544137942514270261, "animated": False},
+    "Diamond III": {"name": "diamond3", "id": 1544137942514270261, "animated": False},
+    "Mythic I": {"name": "mythic", "id": 1544138101050318939, "animated": False},
+    "Mythic II": {"name": "mythic", "id": 1544138101050318939, "animated": False},
+    "Mythic III": {"name": "mythic", "id": 1544138101050318939, "animated": False},
+    "Legendary I": {"name": "legendary1", "id": 1544137768051937342, "animated": False},
+    "Legendary II": {"name": "legendary2", "id": 1544137768051937342, "animated": False},
+    "Legendary III": {"name": "legendary3", "id": 1544137768051937342, "animated": False},
+    "Masters I": {"name": "masters1", "id": 1544140140417523812, "animated": False},
+    "Masters II": {"name": "masters2", "id": 1544140140417523812, "animated": False},
+    "Masters III": {"name": "masters3", "id": 1544140140417523812, "animated": False},
+    "Pro": {"name": "pro", "id": 1544138303098327040, "animated": False}
 }
 
 DEFAULT_RANK_EMOJIS = {
-    "Bronze I": "🥉", "Bronze II": "🥉", "Bronze III": "🥉",
-    "Silver I": "🥈", "Silver II": "🥈", "Silver III": "🥈",
-    "Gold I": "🥇", "Gold II": "🥇", "Gold III": "🥇",
     "Diamond I": "💎", "Diamond II": "💎", "Diamond III": "💎",
     "Mythic I": "🔮", "Mythic II": "🔮", "Mythic III": "🔮",
     "Legendary I": "👑", "Legendary II": "👑", "Legendary III": "👑",
@@ -106,9 +94,6 @@ PAYMENT_OPTIONS = [
 
 # ================= RANK CONFIGURATION =================
 RANK_PRICES = {
-    "Bronze I": 0, "Bronze II": 1, "Bronze III": 1,
-    "Silver I": 1, "Silver II": 1.5, "Silver III": 1.5,
-    "Gold I": 2, "Gold II": 2, "Gold III": 2,
     "Diamond I": 2, "Diamond II": 2, "Diamond III": 3,
     "Mythic I": 4, "Mythic II": 5, "Mythic III": 6,
     "Legendary I": 9, "Legendary II": 12, "Legendary III": 15,
