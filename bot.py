@@ -22,8 +22,8 @@ PAYMENT_DETAILS = {
     "Litecoin": "🥈 **Litecoin Wallet:**\n```LRknuk3z2DyCJjCX1cwZBSV5EvWoxnPaf3\n```"
 }
 
-IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534346676989464587/image.png"
-IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534347605138739250/image.png"
+IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1534360385941930088/1544139759322931252/6E59D332-FA38-4F6A-9445-C6874148CA98.png?ex=6a976bb7&is=6a961a37&hm=f36b8fbe5fe4ebb13f8eb7e2e013acb54d0be38ddb709db79ea661999e45d5d7&"
+IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1534360385941930088/1544139759683637428/91604EDD-A840-469B-A888-9A32037A7FA2.png?ex=6a976bb7&is=6a961a37&hm=f709acc7762ecba68f86c1ab16be76e4aa8adbcd349346d8699d13108aca1bc2&"
 
 # ================= CUSTOM EMOJIS CONFIGURATION =================
 CUSTOM_EMOJIS = {
