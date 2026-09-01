@@ -11,27 +11,15 @@ BOOST_CATEGORY_ID = 1544133872390770798
 CARRY_CATEGORY_ID = 1544133978666172426
 STAFF_ROLE_ID = 1544085720560304208
 
-MY_RIB_INFO = "Bank: CIH BANK\nRIB: 0644507960825345253\nName: Omar"
-MY_PAYPAL_INFO = "PayPal Email: Omarjr"
+
+MY_PAYPAL_INFO = "PayPal User: "
 
 # Dynamic payment details dictionary
 PAYMENT_DETAILS = {
     "PayPal": f"🅿️ **PayPal Details:**\n```\n{MY_PAYPAL_INFO}\n```",
-    "Bank Transfer Portal / RIB": f"🏦 **Bank Transfer Details (RIB):**\n```\n{MY_RIB_INFO}\n```",
-    "Venmo": "💸 **Venmo Details:**\n```\nVenmo ID: @Omarjr\n```",
-    "Cash App": "💵 **Cash App Details:**\n```\nCash Tag: $Omarjr\n```",
-    "Wise": "🌍 **Wise Details:**\n```\nWise Email: Omarjr@wise.com\n```",
-    "Apple Pay": "🍎 **Apple Pay Details:**\n```\nPhone / Email: Omarjr\n```",
-    "Zelle": "⚡ **Zelle Details:**\n```\nZelle Email/Phone: Omarjr\n```",
-    "Binance": "🟡 **Binance Details:**\n```\nBinance Pay ID: 123456789\n```",
+    "Apple Pay": "🍎 **Apple Pay Details:**\n```\.....\n```",
     "Revolut": "💳 **Revolut Details:**\n```\nRevolut Tag: @Omarjr\n```",
-    "Chime": "🟢 **Chime Details:**\n```\nChime Sign: $Omarjr\n```",
-    "Skrill": "🟣 **Skrill Details:**\n```\nSkrill Email: Omarjr\n```",
-    "Bitcoin": "🪙 **Bitcoin Wallet:**\n```\nBTC Address Here\n```",
-    "Litecoin": "🥈 **Litecoin Wallet:**\n```\LPQruLrYG89cHXMVTMLjDKT9fCRZkU2eCh\n```",
-    "Ethereum": "💎 **Ethereum Wallet:**\n```\nETH Address Here\n```",
-    "Solana": "☀️ **Solana Wallet:**\n```\nSOL Address Here\n```",
-    "Tether (USDT)": "💵 **Tether (USDT TRC20) Wallet:**\n```\nUSDT Address Here\n```"
+    "Litecoin": "🥈 **Litecoin Wallet:**\n```\LRknuk3z2DyCJjCX1cwZBSV5EvWoxnPaf3\n```"
 }
 
 IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534346676989464587/image.png"
@@ -40,40 +28,16 @@ IMAGE_PRICES_2 = "https://cdn.discordapp.com/attachments/1254112291096363150/153
 # ================= CUSTOM EMOJIS CONFIGURATION =================
 CUSTOM_EMOJIS = {
     "PayPal": {"name": "paypal", "id": None, "animated": False},
-    "Bank Transfer Portal / RIB": {"name": "bank", "id": None, "animated": False},
-    "Venmo": {"name": "venmo", "id": None, "animated": False},
-    "Cash App": {"name": "cashapp", "id": None, "animated": False},
-    "Wise": {"name": "wise", "id": None, "animated": False},
     "Apple Pay": {"name": "applepay", "id":1534569275564494868, "animated": False},
-    "Zelle": {"name": "zelle", "id": None, "animated": False},
-    "Binance": {"name": "binance", "id": None, "animated": False},
     "Revolut": {"name": "revolut", "id": None, "animated": False},
-    "Chime": {"name": "chime", "id": None, "animated": False},
-    "Skrill": {"name": "skrill", "id": None, "animated": False},
-    "Bitcoin": {"name": "bitcoin", "id": None, "animated": False},
-    "Litecoin": {"name": "litecoin", "id": None, "animated": False},
-    "Ethereum": {"name": "ethereum", "id": None, "animated": False},
-    "Solana": {"name": "solana", "id": 1534559022730969160, "animated": False},
-    "Tether (USDT)": {"name": "usdt", "id": None, "animated": False},
+    "Litecoin": {"name": "litecoin", "id": None, "animated": False}
 }
 
 DEFAULT_EMOJIS = {
     "PayPal": "🅿️",
-    "Bank Transfer Portal / RIB": "🏦",
-    "Venmo": "🔹",
-    "Cash App": "💵",
-    "Wise": "🌐",
     "Apple Pay": "🍎",
-    "Zelle": "⚡",
-    "Binance": "🟡",
     "Revolut": "💳",
-    "Chime": "🟢",
-    "Skrill": "🟣",
-    "Bitcoin": "🪙",
     "Litecoin": "🥈",
-    "Ethereum": "💎",
-    "Solana": "☀️",
-    "Tether (USDT)": "💵"
 }
 
 # ----------------- RANKS EMOJIS -----------------
