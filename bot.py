@@ -17,9 +17,9 @@ MY_PAYPAL_INFO = "Salahslaoui345@gmail.com"
 # Dynamic payment details dictionary
 PAYMENT_DETAILS = {
     "PayPal": f"🅿️ **PayPal Details:**\n```\n{MY_PAYPAL_INFO}\n```",
-    "Apple Pay": "🍎 **Apple Pay Details:**\n```\.....\n```",
+    "Apple Pay": "🍎 **Apple Pay Details:**\n```.....\n```",
     "Revolut": "💳 **Revolut Details:**\n```\nRevolut Tag: @jigsaw9\n```",
-    "Litecoin": "🥈 **Litecoin Wallet:**\n```\LRknuk3z2DyCJjCX1cwZBSV5EvWoxnPaf3\n```"
+    "Litecoin": "🥈 **Litecoin Wallet:**\n```LRknuk3z2DyCJjCX1cwZBSV5EvWoxnPaf3\n```"
 }
 
 IMAGE_PRICES_1 = "https://cdn.discordapp.com/attachments/1254112291096363150/1534346676989464587/image.png"
