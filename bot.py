@@ -12,13 +12,13 @@ CARRY_CATEGORY_ID = 1544133978666172426
 STAFF_ROLE_ID = 1544085720560304208
 
 
-MY_PAYPAL_INFO = "PayPal User: "
+MY_PAYPAL_INFO = "Salahslaoui345@gmail.com"
 
 # Dynamic payment details dictionary
 PAYMENT_DETAILS = {
     "PayPal": f"🅿️ **PayPal Details:**\n```\n{MY_PAYPAL_INFO}\n```",
     "Apple Pay": "🍎 **Apple Pay Details:**\n```\.....\n```",
-    "Revolut": "💳 **Revolut Details:**\n```\nRevolut Tag: @Omarjr\n```",
+    "Revolut": "💳 **Revolut Details:**\n```\nRevolut Tag: @jigsaw9\n```",
     "Litecoin": "🥈 **Litecoin Wallet:**\n```\LRknuk3z2DyCJjCX1cwZBSV5EvWoxnPaf3\n```"
 }
 
